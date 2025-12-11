@@ -1,373 +1,867 @@
-import React, { useState, useEffect } from 'react';
-import { Github, Mail, MessageSquare, Code, Server, Database, Sparkles, ChevronDown } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChicaAI - Beginner Developer Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-export default function ChicaAIPortfolio() {
-  const [activeSection, setActiveSection] = useState('home');
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [submitStatus, setSubmitStatus] = useState('');
-  const [isVisible, setIsVisible] = useState({});
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsVisible((prev) => ({
-            ...prev,
-            [entry.target.id]: entry.isIntersecting,
-          }));
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    document.querySelectorAll('section').forEach((section) => {
-      observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const skills = [
-    { name: 'HTML/CSS', level: 75, icon: '🎨' },
-    { name: 'JavaScript', level: 60, icon: '⚡' },
-    { name: 'React', level: 45, icon: '⚛️' },
-    { name: 'Node.js', level: 50, icon: '🟢' },
-    { name: 'Express.js', level: 55, icon: '🚂' },
-    { name: 'Git/GitHub', level: 70, icon: '📦' },
-  ];
-
-  const projects = [
-    {
-      title: 'Portfolio Website',
-      description: 'Full-stack personal portfolio with contact form and backend API',
-      tech: ['React', 'Node.js', 'Express', 'JSON Storage'],
-      status: 'Active'
-    },
-    {
-      title: 'Learning Projects',
-      description: 'Various small projects to practice frontend and backend concepts',
-      tech: ['HTML', 'CSS', 'JavaScript'],
-      status: 'Ongoing'
-    }
-  ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitStatus('sending');
-    
-    setTimeout(() => {
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setSubmitStatus(''), 3000);
-    }, 1000);
-  };
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setActiveSection(id);
-  };
-
-  return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      <style>{`
         @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         @keyframes glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
-          50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.8); }
-        }
-
-        @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+            0% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
         }
 
         @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
         }
 
-        .animate-fadeInUp {
-          animation: fadeInUp 0.8s ease-out forwards;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .animate-pulse {
-          animation: pulse 2s ease-in-out infinite;
+        @keyframes bounce {
+            0% { 
+                transform: translateY(0); 
+            }
+            50% { 
+                transform: translateY(-10px); 
+            }
+            100% {
+                transform: translateY(0);
+            }
         }
 
-        .animate-glow {
-          animation: glow 2s ease-in-out infinite;
+        @keyframes fillBar {
+            from { 
+                width: 0%; 
+            }
+            to { 
+                width: 100%; 
+            }
         }
 
-        .animate-slideInLeft {
-          animation: slideInLeft 0.8s ease-out forwards;
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
         }
 
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #dc2626;
+            transform: translateY(-2px);
         }
 
         .glass-card {
-          background: rgba(20, 20, 20, 0.7);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(220, 38, 38, 0.2);
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 1rem;
         }
 
-        .skill-bar-fill {
-          transition: width 1.5s ease-out;
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+            position: relative;
         }
 
-        .gradient-text {
-          background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .nav-link {
-          transition: all 0.3s ease;
+        #home {
+            position: relative;
+            text-align: center;
         }
 
-        .nav-link:hover {
-          color: #dc2626;
-          transform: translateY(-2px);
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(127, 29, 29, 0.2), #000);
         }
-      `}</style>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-red-900/30">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold gradient-text">ChicaAI</div>
-            <div className="flex gap-8">
-              {['home', 'about', 'skills', 'projects', 'contact'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`nav-link capitalize ${
-                    activeSection === section ? 'text-red-600' : 'text-gray-300'
-                  }`}
-                >
-                  {section}
-                </button>
-              ))}
-            </div>
-          </div>
+        .floating-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .circle-1 {
+            top: 25%;
+            left: 25%;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .circle-2 {
+            bottom: 25%;
+            right: 25%;
+            background: rgba(239, 68, 68, 0.1);
+            animation-delay: 1s;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            animation: pulse 2s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: #d1d5db;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: glow 2s ease-in-out infinite;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+
+        .scroll-indicator {
+            margin-top: 4rem;
+            animation: bounce 2s ease-in-out infinite;
+            font-size: 2rem;
+            color: #dc2626;
+        }
+
+        #about h2, #skills h2, #projects h2, #contact h2 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #dc2626;
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        .skill-item {
+            margin-bottom: 2rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .skill-icon {
+            font-size: 1.5rem;
+        }
+
+        .skill-percentage {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .skill-bar {
+            height: 12px;
+            background: #1f2937;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #991b1b);
+            border-radius: 9999px;
+            transition: width 1.5s ease-out;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .project-status {
+            font-size: 0.75rem;
+            background: #dc2626;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .project-description {
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            font-size: 0.75rem;
+            background: #1f2937;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: #111827;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #dc2626;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: #b91c1c;
+            transform: scale(1.02);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            color: #10b981;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        footer {
+            border-top: 1px solid rgba(220, 38, 38, 0.3);
+            padding: 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-info h3 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-info p {
+            color: #9ca3af;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            border-color: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { 
+                font-size: 3rem; 
+            }
+            .hero-subtitle { 
+                font-size: 1.3rem; 
+            }
+            .nav-links { 
+                gap: 1rem; 
+            }
+            .footer-main { 
+                flex-direction: column; 
+                text-align: center; 
+            }
+            .social-links { 
+                flex-direction: column; 
+                width: 100%; 
+            }
+            .social-link { 
+                justify-content: center; 
+            }
+        }
+
+        .visible {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">ChicaAI</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </div>
-      </nav>
+    </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative pt-20">
-        <div className="absolute inset-0 bg-gradient-to-b from-red-950/20 to-black"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-800/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-        
-        <div className="relative z-10 text-center px-6 animate-fadeInUp">
-          <div className="flex items-center justify-center mb-6">
-            <Code className="w-16 h-16 text-red-600 animate-pulse" />
-          </div>
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 gradient-text">ChicaAI</h1>
-          <p className="text-2xl md:text-3xl text-gray-300 mb-8">Beginner Developer on a Learning Journey</p>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
-            Building full-stack applications • Learning everyday • Growing as a developer
-          </p>
-          <button
-            onClick={() => scrollToSection('projects')}
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all hover:scale-105 animate-glow"
-          >
-            View My Work
-          </button>
-          <div className="mt-16 animate-bounce">
-            <ChevronDown className="w-8 h-8 mx-auto text-red-600" />
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="min-h-screen flex items-center justify-center py-20 px-6">
-        <div className={`max-w-4xl ${isVisible.about ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">About This Project</h2>
-          <div className="glass-card p-8 rounded-2xl space-y-6">
-            <p className="text-lg text-gray-300 leading-relaxed">
-              As a beginner developer, I built this website to showcase my learning progress and practice both frontend and backend development. This portfolio demonstrates my journey into full-stack development.
+    <section id="home">
+        <div class="hero-bg"></div>
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="hero-content">
+            <div class="hero-icon">💻</div>
+            <h1>ChicaAI</h1>
+            <p class="hero-subtitle">Beginner Developer on a Learning Journey</p>
+            <p class="hero-description">
+                Building full-stack applications • Learning everyday • Growing as a developer
             </p>
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
-                <Code className="w-12 h-12 mx-auto mb-4 text-red-600" />
-                <h3 className="font-bold mb-2">Frontend</h3>
-                <p className="text-sm text-gray-400">Responsive design with modern UI</p>
-              </div>
-              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
-                <Server className="w-12 h-12 mx-auto mb-4 text-red-600" />
-                <h3 className="font-bold mb-2">Backend</h3>
-                <p className="text-sm text-gray-400">Express.js with RESTful API</p>
-              </div>
-              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
-                <Database className="w-12 h-12 mx-auto mb-4 text-red-600" />
-                <h3 className="font-bold mb-2">Storage</h3>
-                <p className="text-sm text-gray-400">JSON-based data persistence</p>
-              </div>
-            </div>
-          </div>
+            <a href="#projects" class="cta-button">View My Work</a>
+            <div class="scroll-indicator">↓</div>
         </div>
-      </section>
+    </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="min-h-screen flex items-center justify-center py-20 px-6">
-        <div className={`max-w-4xl w-full ${isVisible.skills ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">Learning Progress</h2>
-          <div className="glass-card p-8 rounded-2xl">
-            <div className="space-y-8">
-              {skills.map((skill, index) => (
-                <div key={skill.name} className="animate-slideInLeft" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{skill.icon}</span>
-                      <span className="font-semibold text-lg">{skill.name}</span>
+    <section id="about">
+        <div class="container">
+            <h2>About This Project</h2>
+            <div class="glass-card" style="padding: 2rem;">
+                <p class="about-text">
+                    As a beginner developer, I built this website to showcase my learning progress and practice both frontend and backend development. This portfolio demonstrates my journey into full-stack development.
+                </p>
+                <div class="feature-grid">
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3 class="feature-title">Frontend</h3>
+                        <p class="feature-description">Responsive design with modern UI</p>
                     </div>
-                    <span className="text-red-600 font-bold">{skill.level}%</span>
-                  </div>
-                  <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-red-600 to-red-800 skill-bar-fill"
-                      style={{ width: isVisible.skills ? `${skill.level}%` : '0%' }}
-                    ></div>
-                  </div>
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3 class="feature-title">Backend</h3>
+                        <p class="feature-description">Express.js with RESTful API</p>
+                    </div>
+                    <div class="glass-card feature-card">
+                        <div class="feature-icon">💾</div>
+                        <h3 class="feature-title">Storage</h3>
+                        <p class="feature-description">JSON-based data persistence</p>
+                    </div>
                 </div>
-              ))}
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-6">
-        <div className={`max-w-4xl w-full ${isVisible.projects ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">My Projects</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className="glass-card p-6 rounded-2xl hover:border-red-600 transition-all hover:scale-105"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold">{project.title}</h3>
-                  <span className="text-xs bg-red-600 px-3 py-1 rounded-full">{project.status}</span>
+    <section id="skills">
+        <div class="container">
+            <h2>Learning Progress</h2>
+            <div class="glass-card" style="padding: 2rem;">
+                <div class="skill-item" style="animation-delay: 0s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">🎨</span>
+                            <span>HTML/CSS</span>
+                        </div>
+                        <span class="skill-percentage">75%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="75" style="width: 0%"></div>
+                    </div>
                 </div>
-                <p className="text-gray-400 mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="text-xs bg-gray-800 px-3 py-1 rounded-full border border-red-900/30">
-                      {tech}
-                    </span>
-                  ))}
+
+                <div class="skill-item" style="animation-delay: 0.1s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">⚡</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <span class="skill-percentage">60%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="60" style="width: 0%"></div>
+                    </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-6">
-        <div className={`max-w-4xl w-full ${isVisible.contact ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">Get In Touch</h2>
-          <div className="glass-card p-8 rounded-2xl">
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-semibold mb-2">Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 focus:outline-none focus:border-red-600 transition-colors"
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 focus:outline-none focus:border-red-600 transition-colors"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">Message</label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 h-32 resize-none focus:outline-none focus:border-red-600 transition-colors"
-                  placeholder="Your message..."
-                ></textarea>
-              </div>
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition-all hover:scale-105"
-              >
-                {submitStatus === 'sending' ? 'Sending...' : submitStatus === 'success' ? '✓ Message Sent!' : 'Send Message'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+                <div class="skill-item" style="animation-delay: 0.2s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">⚛️</span>
+                            <span>React</span>
+                        </div>
+                        <span class="skill-percentage">45%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="45" style="width: 0%"></div>
+                    </div>
+                </div>
 
-      {/* Footer */}
-      <footer className="border-t border-red-900/30 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold gradient-text mb-2">ChicaAI</h3>
-              <p className="text-gray-400">Beginner Developer • Always Learning</p>
+                <div class="skill-item" style="animation-delay: 0.3s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">🟢</span>
+                            <span>Node.js</span>
+                        </div>
+                        <span class="skill-percentage">50%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="50" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item" style="animation-delay: 0.4s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">🚂</span>
+                            <span>Express.js</span>
+                        </div>
+                        <span class="skill-percentage">55%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="55" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item" style="animation-delay: 0.5s;">
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            <span class="skill-icon">📦</span>
+                            <span>Git/GitHub</span>
+                        </div>
+                        <span class="skill-percentage">70%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="70" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
-            <div className="flex gap-6">
-              <a
-                href="https://github.com/Chica999"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 glass-card px-6 py-3 rounded-full hover:border-red-600 transition-all hover:scale-105"
-              >
-                <Github className="w-5 h-5" />
-                <span>Chica999</span>
-              </a>
-              <a
-                href="https://discord.com/users/xChica999"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 glass-card px-6 py-3 rounded-full hover:border-red-600 transition-all hover:scale-105"
-              >
-                <MessageSquare className="w-5 h-5" />
-                <span>xChica999</span>
-              </a>
-            </div>
-          </div>
-          <div className="text-center mt-8 text-gray-500 text-sm">
-            © 2024 ChicaAI • Built with React & Express.js
-          </div>
         </div>
-      </footer>
-    </div>
-  );
-}
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2>My Projects</h2>
+            <div class="projects-grid">
+                <div class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Portfolio Website</h3>
+                        <span class="project-status">Active</span>
+                    </div>
+                    <p class="project-description">
+                        Full-stack personal portfolio with contact form and backend API
+                    </p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Express</span>
+                        <span class="tech-tag">JSON Storage</span>
+                    </div>
+                </div>
+
+                <div class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Learning Projects</h3>
+                        <span class="project-status">Ongoing</span>
+                    </div>
+                    <p class="project-description">
+                        Various small projects to practice frontend and backend concepts
+                    </p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="glass-card contact-form" style="padding: 2rem;">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Your message..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
+                    <div id="successMessage" class="success-message" style="display: none;">
+                        ✓ Message sent successfully!
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-info">
+                    <h3>ChicaAI</h3>
+                    <p>Beginner Developer • Always Learning</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/Chica999" target="_blank" class="glass-card social-link">
+                        <span>🐙</span>
+                        <span>Chica999</span>
+                    </a>
+                    <a href="https://discord.com/users/xChica999" target="_blank" class="glass-card social-link">
+                        <span>💬</span>
+                        <span>xChica999</span>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2024 ChicaAI • Built with HTML, CSS & JavaScript
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            var submitButton = this.querySelector('.submit-button');
+            var successMessage = document.getElementById('successMessage');
+            
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+
+            setTimeout(function() {
+                submitButton.textContent = '✓ Message Sent!';
+                successMessage.style.display = 'block';
+                document.getElementById('contactForm').reset();
+                
+                setTimeout(function() {
+                    submitButton.textContent = 'Send Message';
+                    submitButton.disabled = false;
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }, 1000);
+        });
+
+        var observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    if (entry.target.id === 'skills') {
+                        var skillFills = entry.target.querySelectorAll('.skill-fill');
+                        skillFills.forEach(function(fill) {
+                            var width = fill.getAttribute('data-width');
+                            setTimeout(function() {
+                                fill.style.width = width + '%';
+                            }, 100);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(function(section) {
+            observer.observe(section);
+        });
+
+        window.addEventListener('scroll', function() {
+            var current = '';
+            document.querySelectorAll('section').forEach(function(section) {
+                var sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(function(link) {
+                link.style.color = '#9ca3af';
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.style.color = '#dc2626';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
