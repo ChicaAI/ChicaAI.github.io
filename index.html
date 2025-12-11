@@ -1,0 +1,373 @@
+import React, { useState, useEffect } from 'react';
+import { Github, Mail, MessageSquare, Code, Server, Database, Sparkles, ChevronDown } from 'lucide-react';
+
+export default function ChicaAIPortfolio() {
+  const [activeSection, setActiveSection] = useState('home');
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submitStatus, setSubmitStatus] = useState('');
+  const [isVisible, setIsVisible] = useState({});
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible((prev) => ({
+            ...prev,
+            [entry.target.id]: entry.isIntersecting,
+          }));
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('section').forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const skills = [
+    { name: 'HTML/CSS', level: 75, icon: '🎨' },
+    { name: 'JavaScript', level: 60, icon: '⚡' },
+    { name: 'React', level: 45, icon: '⚛️' },
+    { name: 'Node.js', level: 50, icon: '🟢' },
+    { name: 'Express.js', level: 55, icon: '🚂' },
+    { name: 'Git/GitHub', level: 70, icon: '📦' },
+  ];
+
+  const projects = [
+    {
+      title: 'Portfolio Website',
+      description: 'Full-stack personal portfolio with contact form and backend API',
+      tech: ['React', 'Node.js', 'Express', 'JSON Storage'],
+      status: 'Active'
+    },
+    {
+      title: 'Learning Projects',
+      description: 'Various small projects to practice frontend and backend concepts',
+      tech: ['HTML', 'CSS', 'JavaScript'],
+      status: 'Ongoing'
+    }
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitStatus('sending');
+    
+    setTimeout(() => {
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setSubmitStatus(''), 3000);
+    }, 1000);
+  };
+
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setActiveSection(id);
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+          50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.8); }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-pulse {
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .animate-glow {
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        .animate-slideInLeft {
+          animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .glass-card {
+          background: rgba(20, 20, 20, 0.7);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+
+        .skill-bar-fill {
+          transition: width 1.5s ease-out;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #dc2626 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .nav-link {
+          transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+          color: #dc2626;
+          transform: translateY(-2px);
+        }
+      `}</style>
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-red-900/30">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold gradient-text">ChicaAI</div>
+            <div className="flex gap-8">
+              {['home', 'about', 'skills', 'projects', 'contact'].map((section) => (
+                <button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  className={`nav-link capitalize ${
+                    activeSection === section ? 'text-red-600' : 'text-gray-300'
+                  }`}
+                >
+                  {section}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="min-h-screen flex items-center justify-center relative pt-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-red-950/20 to-black"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-800/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        
+        <div className="relative z-10 text-center px-6 animate-fadeInUp">
+          <div className="flex items-center justify-center mb-6">
+            <Code className="w-16 h-16 text-red-600 animate-pulse" />
+          </div>
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 gradient-text">ChicaAI</h1>
+          <p className="text-2xl md:text-3xl text-gray-300 mb-8">Beginner Developer on a Learning Journey</p>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
+            Building full-stack applications • Learning everyday • Growing as a developer
+          </p>
+          <button
+            onClick={() => scrollToSection('projects')}
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-all hover:scale-105 animate-glow"
+          >
+            View My Work
+          </button>
+          <div className="mt-16 animate-bounce">
+            <ChevronDown className="w-8 h-8 mx-auto text-red-600" />
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="min-h-screen flex items-center justify-center py-20 px-6">
+        <div className={`max-w-4xl ${isVisible.about ? 'animate-fadeInUp' : 'opacity-0'}`}>
+          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">About This Project</h2>
+          <div className="glass-card p-8 rounded-2xl space-y-6">
+            <p className="text-lg text-gray-300 leading-relaxed">
+              As a beginner developer, I built this website to showcase my learning progress and practice both frontend and backend development. This portfolio demonstrates my journey into full-stack development.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
+                <Code className="w-12 h-12 mx-auto mb-4 text-red-600" />
+                <h3 className="font-bold mb-2">Frontend</h3>
+                <p className="text-sm text-gray-400">Responsive design with modern UI</p>
+              </div>
+              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
+                <Server className="w-12 h-12 mx-auto mb-4 text-red-600" />
+                <h3 className="font-bold mb-2">Backend</h3>
+                <p className="text-sm text-gray-400">Express.js with RESTful API</p>
+              </div>
+              <div className="text-center p-6 glass-card rounded-xl hover:border-red-600 transition-all">
+                <Database className="w-12 h-12 mx-auto mb-4 text-red-600" />
+                <h3 className="font-bold mb-2">Storage</h3>
+                <p className="text-sm text-gray-400">JSON-based data persistence</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="min-h-screen flex items-center justify-center py-20 px-6">
+        <div className={`max-w-4xl w-full ${isVisible.skills ? 'animate-fadeInUp' : 'opacity-0'}`}>
+          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">Learning Progress</h2>
+          <div className="glass-card p-8 rounded-2xl">
+            <div className="space-y-8">
+              {skills.map((skill, index) => (
+                <div key={skill.name} className="animate-slideInLeft" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{skill.icon}</span>
+                      <span className="font-semibold text-lg">{skill.name}</span>
+                    </div>
+                    <span className="text-red-600 font-bold">{skill.level}%</span>
+                  </div>
+                  <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-red-600 to-red-800 skill-bar-fill"
+                      style={{ width: isVisible.skills ? `${skill.level}%` : '0%' }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="min-h-screen flex items-center justify-center py-20 px-6">
+        <div className={`max-w-4xl w-full ${isVisible.projects ? 'animate-fadeInUp' : 'opacity-0'}`}>
+          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">My Projects</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                className="glass-card p-6 rounded-2xl hover:border-red-600 transition-all hover:scale-105"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold">{project.title}</h3>
+                  <span className="text-xs bg-red-600 px-3 py-1 rounded-full">{project.status}</span>
+                </div>
+                <p className="text-gray-400 mb-4">{project.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((tech) => (
+                    <span key={tech} className="text-xs bg-gray-800 px-3 py-1 rounded-full border border-red-900/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="min-h-screen flex items-center justify-center py-20 px-6">
+        <div className={`max-w-4xl w-full ${isVisible.contact ? 'animate-fadeInUp' : 'opacity-0'}`}>
+          <h2 className="text-5xl font-bold mb-12 text-center gradient-text">Get In Touch</h2>
+          <div className="glass-card p-8 rounded-2xl">
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold mb-2">Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 focus:outline-none focus:border-red-600 transition-colors"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-2">Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 focus:outline-none focus:border-red-600 transition-colors"
+                  placeholder="your.email@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-2">Message</label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full bg-gray-900 border border-red-900/30 rounded-lg px-4 py-3 h-32 resize-none focus:outline-none focus:border-red-600 transition-colors"
+                  placeholder="Your message..."
+                ></textarea>
+              </div>
+              <button
+                onClick={handleSubmit}
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition-all hover:scale-105"
+              >
+                {submitStatus === 'sending' ? 'Sending...' : submitStatus === 'success' ? '✓ Message Sent!' : 'Send Message'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-red-900/30 py-12">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold gradient-text mb-2">ChicaAI</h3>
+              <p className="text-gray-400">Beginner Developer • Always Learning</p>
+            </div>
+            <div className="flex gap-6">
+              <a
+                href="https://github.com/Chica999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 glass-card px-6 py-3 rounded-full hover:border-red-600 transition-all hover:scale-105"
+              >
+                <Github className="w-5 h-5" />
+                <span>Chica999</span>
+              </a>
+              <a
+                href="https://discord.com/users/xChica999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 glass-card px-6 py-3 rounded-full hover:border-red-600 transition-all hover:scale-105"
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span>xChica999</span>
+              </a>
+            </div>
+          </div>
+          <div className="text-center mt-8 text-gray-500 text-sm">
+            © 2024 ChicaAI • Built with React & Express.js
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
