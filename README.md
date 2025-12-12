@@ -1,2 +1,3 @@
 # ChicaAI.github.io
-Personal portfolio
+# ChicaAI - Beginner Developer Portfolio
+
